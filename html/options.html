@@ -1,0 +1,31 @@
+<html>
+	<head><title>xkcd substitutions+</title></head>
+	<link rel="stylesheet" href="../css/style.css" type="text/css" /> 
+
+	<body>
+		<h1>
+			  <img src="../images/black_hat64.png" alt="Toast">
+			  xkcd substitutions+
+		</h1>
+		<h2>Substitutions list</h2>
+		
+		<table id=rules></table>
+		<button id=new>New Rule</button>
+		
+		<table hidden>	
+			<tr id=rule-template hidden>
+				<td class=nowrap> 
+					<input type=text class="match-word" placeholder="word" size="40">
+					<input type=text class="substitute-word" placeholder="substitution" size="40">
+					<label><input type=checkbox class="case-sensitive" value="value"> case sensitive</label>					
+					<button class=remove>Remove</button>
+				<td>
+			</tr>
+		</table>
+
+		<br>
+		
+	</body>
+
+	<script src="../js/options.js"></script>
+</html>
