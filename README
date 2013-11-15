@@ -1,0 +1,5 @@
+A little chrome extenstion that makes reading the news more fun, 
+by replacing an editable list of words in every webpage you browse to.
+
+It's an implementation of xkcd.com/1288, I wrote to fiddle around 
+with chrome extensions development.
