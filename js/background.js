@@ -43,7 +43,7 @@ var initRules = function(){
 	);  
 }
 
-// execute the content_script on the current tab (tabId is null)
+// execute the content_script on the current tab (null tabId means the script will run at the current tab)
 var runScript = function(){
 	storage.get("extentionActivityState",
 		function(result){
@@ -74,8 +74,10 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 });
 
 // addListener to tabs update and refresh 1 sec after update 
-chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {  
-	setTimeout(runScript, 1000);
+chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {  	
+	if (changeInfo.status == "loading" && tab.active){
+		setTimeout(runScript, 1200);
+	}
 });
 
 
