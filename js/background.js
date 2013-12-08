@@ -86,6 +86,6 @@ var initialRuleSet =
 initRules();
 
 // refresh the active tab automatically every 30 seconds
-setInterval(runScript, 30000);
+setInterval(runScript, 60000);
 
 	
