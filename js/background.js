@@ -1,17 +1,43 @@
 
+console.log("Extesion loading");
+var storage = chrome.storage.local;
 
-// init the extension as active
-var isExtentionOn = new Boolean(1);
-chrome.browserAction.setBadgeText({text: "on"});
+var setExtensionBadgeState = function(booleanState){
+	if (booleanState){
+		storage.set({"extentionActivityState" : {"state" : true}});
+		chrome.browserAction.setBadgeText({text: "on"});
+		
+		console.log("Running substitiution script " + '[' + new Date().toUTCString() + ']');	
+		chrome.tabs.executeScript(null, {file: "js/content_script.js"});
+	} else {
+		storage.set({"extentionActivityState" : {"state" : false}});
+		chrome.browserAction.setBadgeText({text: "off"});
+	}
+}
+
+var initExtentionActivityState = function(){
+	chrome.storage.local.get("extentionActivityState",
+		function(result){
+			if (result.extentionActivityState){
+				console.log("Extention activity state is already initialized");
+				setExtensionBadgeState(result.extentionActivityState.state);
+			} else {
+				console.log("Initializing the extension state to 'true' for the first time");
+				setExtensionBadgeState(true);
+				
+			}
+		}
+	); 
+}
 
 var initRules = function(){
-	chrome.storage.local.get("rules",
+	storage.get("rules",
 		function(result){
 			if (result.rules){
 				console.log("Substitution rules is already initialized");
 			} else {
 				console.log("Initializing the substitution rules for the first time");
-				chrome.storage.local.set({"rules" : initialRuleSet});
+				storage.set({"rules" : initialRuleSet});
 			}
 		}
 	);  
@@ -19,19 +45,32 @@ var initRules = function(){
 
 // execute the content_script on the current tab (tabId is null)
 var runScript = function(){
-	if (isExtentionOn) {
-		chrome.tabs.executeScript(null, {file: "js/content_script.js"});
-	}
+	storage.get("extentionActivityState",
+		function(result){
+			if (result.extentionActivityState){
+				var isExtentionOn = result.extentionActivityState.state;
+				if (isExtentionOn) {
+					console.log("Running substitiution script " + '[' + new Date().toUTCString() + ']');	
+					chrome.tabs.executeScript(null, {file: "js/content_script.js"});
+				}
+			} else{
+				console.error("extentionActivityState is not initialized");	
+			}
+		}
+	);
 }
 
 chrome.browserAction.onClicked.addListener(function(tab) {
-	isExtentionOn = ! isExtentionOn;
-	if (isExtentionOn){
-		chrome.browserAction.setBadgeText({text: "on"});
-		setTimeout(runScript, 1000);
-	} else {
-		chrome.browserAction.setBadgeText({text: "off"});
-	}
+	storage.get("extentionActivityState",
+		function(result){
+			if (result.extentionActivityState){
+				var isExtentionOn = result.extentionActivityState.state;
+				setExtensionBadgeState(!isExtentionOn);				
+			} else {
+				console.error("extentionActivityState is not initialized");				
+			}
+		}
+	);  
 });
 
 // addListener to tabs update and refresh 1 sec after update 
@@ -83,9 +122,11 @@ var initialRuleSet =
 	{"match_word":"could not be reached for comment" , "substitute_word":"is guilty and everyone knows it" , "case_sensitive" : false}	
 ];
 
+initExtentionActivityState();
 initRules();
 
-// refresh the active tab automatically every 30 seconds
+// refresh the active tab automatically every 60 seconds
 setInterval(runScript, 60000);
+
 
 	
