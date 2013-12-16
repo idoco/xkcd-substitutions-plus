@@ -3,7 +3,7 @@
 
 	"name": "xkcd Substitutions Plus",
 	"description": "Substitutions that make reading the news more fun.",
-	"version": "2.7",
+	"version": "3.0",
 	"icons": { "16": "images/black_hat16.png",
            "48": "images/black_hat48.png",
           "128": "images/black_hat128.png" },

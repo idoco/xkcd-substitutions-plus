@@ -10,7 +10,13 @@ var replaceWordIfNeeded = function(node) {
 				if (rule.case_sensitive){
 					caseSensativity = 'g';
 				}
-				node.textContent =  node.textContent.replace(new RegExp('\\b'+rule.match_word+'\\b', 'ig'), rule.substitute_word);
+				var matchString;
+				if (rule.match_substring){
+					matchString = rule.match_word;
+				} else {
+					matchString = '\\b'+rule.match_word+'\\b';					
+				}
+				node.textContent =  node.textContent.replace(new RegExp(matchString, caseSensativity), rule.substitute_word);
 			}
 		}
 	);	
