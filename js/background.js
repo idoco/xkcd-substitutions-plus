@@ -2,7 +2,7 @@
 console.log("Extension loading");
 var storage = chrome.storage.local;
 
-var setExtensionBadgeState = function(booleanState){
+function setExtensionBadgeState(booleanState){
 	if (booleanState){
 		storage.set({"extensionActivityState" : {"state" : true}});
 		chrome.browserAction.setBadgeText({text: "on"});
@@ -15,7 +15,7 @@ var setExtensionBadgeState = function(booleanState){
 	}
 }
 
-var initExtensionActivityState = function(){
+function initExtensionActivityState(){
 	chrome.storage.local.get("extensionActivityState",
 		function(result){
 			if (result.extensionActivityState){
@@ -30,7 +30,7 @@ var initExtensionActivityState = function(){
 	); 
 }
 
-var initRules = function(){
+function initRules(){
 	storage.get("rules",
 		function(result){
 			if (result.rules){
@@ -44,7 +44,7 @@ var initRules = function(){
 }
 
 // execute the content_script on the current tab (null tabId means the script will run at the current tab)
-var runScript = function(){
+function runScript(){
 	storage.get("extensionActivityState",
 		function(result){
 			if (result.extensionActivityState){

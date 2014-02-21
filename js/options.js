@@ -29,9 +29,9 @@ function Rule(data) {
   storeRules();
 }
 
-Rule.prototype.getElement = function(name) {
-  return document.querySelector('#' + this.node.id + ' .' + name);
-}
+Rule.prototype.getElement = function (name) {
+    return document.querySelector('#' + this.node.id + ' .' + name);
+};
 
 Rule.next_id = 0;
 
@@ -39,9 +39,9 @@ Rule.next_id = 0;
 function loadRulesToOptionsPage() {
 	chrome.storage.local.get("rules",
 		function(result){
-			var rules = result.rules			
+			var rules = result.rules;
 			try {				
-				var length = rules.length
+				var length = rules.length;
 				for (var i = 0; i < length; i++) {
 					new Rule(rules[i]);
 				}
@@ -65,8 +65,6 @@ function storeRules() {
 		)
 	});
 }
-
-
 
 window.onload = function() {
   loadRulesToOptionsPage();

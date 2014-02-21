@@ -32,8 +32,6 @@ while(walker.nextNode()) {
 	var currentNode = walker.currentNode;
 	//console.log(currentNode);
 	if (currentNode != null){
-		console.log(currentNode.textContent);
-		console.log(currentNode.textContent);
 		replaceWordIfNeeded(currentNode);
 	}
 }
