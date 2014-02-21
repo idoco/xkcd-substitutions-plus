@@ -1,26 +1,26 @@
 
-console.log("Extesion loading");
+console.log("Extension loading");
 var storage = chrome.storage.local;
 
 var setExtensionBadgeState = function(booleanState){
 	if (booleanState){
-		storage.set({"extentionActivityState" : {"state" : true}});
+		storage.set({"extensionActivityState" : {"state" : true}});
 		chrome.browserAction.setBadgeText({text: "on"});
 		
-		console.log("Running substitiution script " + '[' + new Date().toUTCString() + ']');	
+		console.log("Running substitution script " + '[' + new Date().toUTCString() + ']');
 		chrome.tabs.executeScript(null, {file: "js/content_script.js"});
 	} else {
-		storage.set({"extentionActivityState" : {"state" : false}});
+		storage.set({"extensionActivityState" : {"state" : false}});
 		chrome.browserAction.setBadgeText({text: "off"});
 	}
 }
 
-var initExtentionActivityState = function(){
-	chrome.storage.local.get("extentionActivityState",
+var initExtensionActivityState = function(){
+	chrome.storage.local.get("extensionActivityState",
 		function(result){
-			if (result.extentionActivityState){
-				console.log("Extention activity state is already initialized");
-				setExtensionBadgeState(result.extentionActivityState.state);
+			if (result.extensionActivityState){
+				console.log("Extension activity state is already initialized");
+				setExtensionBadgeState(result.extensionActivityState.state);
 			} else {
 				console.log("Initializing the extension state to 'true' for the first time");
 				setExtensionBadgeState(true);
@@ -45,29 +45,29 @@ var initRules = function(){
 
 // execute the content_script on the current tab (null tabId means the script will run at the current tab)
 var runScript = function(){
-	storage.get("extentionActivityState",
+	storage.get("extensionActivityState",
 		function(result){
-			if (result.extentionActivityState){
-				var isExtentionOn = result.extentionActivityState.state;
-				if (isExtentionOn) {
-					console.log("Running substitiution script " + '[' + new Date().toUTCString() + ']');	
+			if (result.extensionActivityState){
+				var isExtensionOn = result.extensionActivityState.state;
+				if (isExtensionOn) {
+					console.log("Running substitution script " + '[' + new Date().toUTCString() + ']');
 					chrome.tabs.executeScript(null, {file: "js/content_script.js"});
 				}
 			} else{
-				console.error("extentionActivityState is not initialized");	
+				console.error("extensionActivityState is not initialized");
 			}
 		}
 	);
 }
 
 chrome.browserAction.onClicked.addListener(function(tab) {
-	storage.get("extentionActivityState",
+	storage.get("extensionActivityState",
 		function(result){
-			if (result.extentionActivityState){
-				var isExtentionOn = result.extentionActivityState.state;
-				setExtensionBadgeState(!isExtentionOn);				
+			if (result.extensionActivityState){
+				var isExtensionOn = result.extensionActivityState.state;
+				setExtensionBadgeState(!isExtensionOn);
 			} else {
-				console.error("extentionActivityState is not initialized");				
+				console.error("extensionActivityState is not initialized");
 			}
 		}
 	);  
@@ -100,8 +100,8 @@ var initialRuleSet =
 	{"match_word":"Car" , "substitute_word":"Cat" , "case_sensitive" : true },
 	{"match_word":"Cars" , "substitute_word":"Cats" , "case_sensitive" : true },
 	{"match_word":"Election" , "substitute_word":"Eating contest" , "case_sensitive" : true },
-	{"match_word":"Congerssional leaders" , "substitute_word":"River spirits" , "case_sensitive" : true },
-	{"match_word":"Congerssional Leaders" , "substitute_word":"River Spirits" , "case_sensitive" : true },
+	{"match_word":"Congressional leaders" , "substitute_word":"River spirits" , "case_sensitive" : true },
+	{"match_word":"Congressional Leaders" , "substitute_word":"River Spirits" , "case_sensitive" : true },
 	{"match_word":"Homeland security" , "substitute_word":"Homestar runner" , "case_sensitive" : true },
 	{"match_word":"Homeland Security" , "substitute_word":"Homestar Runner" , "case_sensitive" : true },
 	{"match_word":"Could not be reached for comment" , "substitute_word":"Is guilty and everyone knows it" , "case_sensitive" : true },
@@ -119,12 +119,12 @@ var initialRuleSet =
 	{"match_word":"car" , "substitute_word":"cat" , "case_sensitive" : false},
 	{"match_word":"cars" , "substitute_word":"cats" , "case_sensitive" : false},
 	{"match_word":"election" , "substitute_word":"eating contest" , "case_sensitive" : false},
-	{"match_word":"congerssional leaders" , "substitute_word":"river spirits" , "case_sensitive" : false},
+	{"match_word":"congressional leaders" , "substitute_word":"river spirits" , "case_sensitive" : false},
 	{"match_word":"homeland security" , "substitute_word":"homestar runner" , "case_sensitive" : false},
 	{"match_word":"could not be reached for comment" , "substitute_word":"is guilty and everyone knows it" , "case_sensitive" : false}	
 ];
 
-initExtentionActivityState();
+initExtensionActivityState();
 initRules();
 
 // refresh the active tab automatically every 60 seconds

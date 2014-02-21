@@ -6,21 +6,21 @@ var replaceWordIfNeeded = function(node) {
 			var length = rules.length;
 			for (var i = 0; i < length; i++) {
 				var rule = rules[i];
-				var caseSensativity = 'ig';
+				var caseSensitively = 'ig';
 				if (rule.case_sensitive){
-					caseSensativity = 'g';
+					caseSensitively = 'g';
 				}
 				var matchString;
 				if (rule.match_substring){
 					matchString = rule.match_word;
 				} else {
-					matchString = '\\b'+rule.match_word+'\\b';					
+					matchString = '\\b'+rule.match_word+'\\b';
 				}
-				node.textContent =  node.textContent.replace(new RegExp(matchString, caseSensativity), rule.substitute_word);
+				node.textContent =  node.textContent.replace(new RegExp(matchString, caseSensitively), rule.substitute_word);
 			}
 		}
-	);	
-}
+	);
+};
 	
 walker = document.createTreeWalker(
 	document.body,

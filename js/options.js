@@ -73,4 +73,4 @@ window.onload = function() {
   document.getElementById('new').onclick = function() {
 	new Rule();
   };
-}
+};
